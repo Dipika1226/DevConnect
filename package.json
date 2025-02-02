@@ -1,0 +1,15 @@
+{
+  "name": "devconnect",
+  "version": "1.0.0",
+  "description": "A website for developers to connect",
+  "main": "index.js",
+  "scripts": {
+    "start":"node src/app.js",
+    "dev":"nodemon src/app.js"
+  },
+  "author": "Dipika Mishra",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
