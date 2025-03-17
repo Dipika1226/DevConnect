@@ -7,7 +7,7 @@ authRouter.post("/signup", async (req, res) => {
     try {
         //validation of data
         validateSignUp(req.body);
-        const { firstName, lastName, emailId, password, skills, about, photoURL } = req.body;
+        const { firstName, lastName, emailId, password, skills, about, photoURL, gender, age } = req.body;
         //encrypt the data
         const hashedPassword = await bcrypt.hash(password, 10);//10 is decent/standard rounds of salt
 
@@ -20,14 +20,19 @@ authRouter.post("/signup", async (req, res) => {
             password: hashedPassword,
             skills,
             about,
-            photoURL
+            photoURL,
+            gender,
+            age
         });
 
-        if (req.body?.skills.length > 15) {
+        if (skills && req.body?.skills.length > 15) {
             throw new Error("More than 15 skills are not allowed");
         }
-        await user.save()//for saving user to db
-        res.send("user added successfully to DB");
+
+        const savedUser = await user.save()//for saving user to db
+        const token = await savedUser.createJWT();
+        res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 3600000) });
+        res.json({ message: "user added successfully to DB", savedUser });
     }
     catch (err) {
         res.status(400).send("Error while adding user to DB:" + err.message);
@@ -48,7 +53,7 @@ authRouter.post("/login", async (req, res) => {
             //create jwt token
             const token = await user.createJWT();
             res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 3600000) });
-            res.send("Logged in Successfully!!!");
+            res.send(user);
         }
         else {
             throw new Error("Invalid credentials");

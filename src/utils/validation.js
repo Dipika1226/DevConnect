@@ -12,7 +12,7 @@ const validateSignUp = ({ firstName, lastName, emailId, password }) => {
     }
 }
 const validateProfileUpdateData = (req) => {
-    const allowedUpdates = ["firstName", "lastName", "skills", "about", "photoURL", "gender"]
+    const allowedUpdates = ["firstName", "lastName", "skills", "about", "photoURL", "gender", "age"]
     return Object.keys(req.body).every((field) => { return allowedUpdates.includes(field) })
 }
 module.exports = {
