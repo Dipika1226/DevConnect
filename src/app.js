@@ -3,21 +3,10 @@ const app = express();
 const connectDB = require("./config/database");
 const cookieParser = require("cookie-parser");
 const jwt = require('jsonwebtoken');
-const cors = require("cors")
-
-const allowedOrigins = [
-    'http://localhost:5173',                  // your local frontend (Vite default port)
-    'https://dev-connect-web-eight.vercel.app' // your deployed frontend URL
-];
+const cors = require("cors");
 
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin) return callback(null, true); // allow non-browser requests like Postman
-        if (allowedOrigins.indexOf(origin) === -1) {
-            return callback(new Error('Not allowed by CORS'), false);
-        }
-        return callback(null, true);
-    },
+    origin: ['http://localhost:5173', 'https://dev-connect-web-eight.vercel.app'],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
