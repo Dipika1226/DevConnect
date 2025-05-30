@@ -52,7 +52,12 @@ authRouter.post("/login", async (req, res) => {
         if (isPasswordValid) {
             //create jwt token
             const token = await user.createJWT();
-            res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 3600000) });
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: true,           // Must be true in production (HTTPS)
+                sameSite: "None",
+                expires: new Date(Date.now() + 7 * 24 * 3600000)
+            });
             res.send(user);
         }
         else {
@@ -64,7 +69,12 @@ authRouter.post("/login", async (req, res) => {
     }
 })
 authRouter.post("/logout", async (req, res) => {
-    res.cookie("token", null, { expires: new Date(Date.now()) })
+    res.cookie("token", null, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        expires: new Date(Date.now())
+    })
     res.send("logged out successfully");
 })
 module.exports = authRouter;
