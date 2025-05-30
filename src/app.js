@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const cors = require("cors");
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://dev-connect-web-eight.vercel.app'],
+    origin: 'https://dev-connect-web-eight.vercel.app',
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true
